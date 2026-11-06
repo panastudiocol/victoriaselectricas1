@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Victorias Eléctricas · App</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-negro.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-blanco.png" media="(prefers-color-scheme: dark)">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Montserrat:ital,wght@0,300..700;1,300..700&amp;display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;background:#E9E1D4;color:#2E2520;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+*{box-sizing:border-box}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+::selection{background:#A65B37;color:#F7F2EA}
+.ve-scroll{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.ve-scroll::-webkit-scrollbar{display:none}
+.ve-scroll>*{scroll-snap-align:start;flex:none}
+@keyframes veIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes veNudge{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+@keyframes veNudgeL{0%,100%{transform:translateX(0)}50%{transform:translateX(-5px)}}
+@keyframes vePop{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}
+.ve-view{animation:veIn .45s cubic-bezier(.2,.8,.2,1) both}
+.ve-tap{transition:transform .18s ease}
+.ve-frame{position:relative;margin:22px 4px 26px;padding:38px 20px 40px;border:1.5px solid #BB820E;outline:1px solid rgba(187,130,14,.75);outline-offset:-8px;text-align:center}
+.ve-frame>.ve-dia{position:absolute;width:8px;height:8px;background:#BB820E;transform:rotate(45deg)}
+.ve-frame>.ve-gap{position:absolute;left:50%;transform:translateX(-50%);height:12px;background:#F7F2EA}
+.ve-frame>.ve-ot{position:absolute;left:50%;top:0;width:48%;max-width:190px;transform:translate(-50%,-56%)!important;transition:none!important;display:block;pointer-events:none}
+.ve-frame>.ve-ob{position:absolute;left:50%;bottom:0;width:40%;max-width:160px;transform:translate(-50%,52%)!important;transition:none!important;display:block;pointer-events:none}
+.ve-div{display:flex;align-items:center;gap:10px;margin:2px 0}
+.ve-div>span{flex:1;height:1px;background:linear-gradient(90deg,rgba(187,130,14,0),#BB820E)}
+.ve-div>span:last-child{background:linear-gradient(90deg,#BB820E,rgba(187,130,14,0))}
+.ve-div>img{width:96px;display:block;transform:none!important}
+.ve-tap:active{transform:scale(.97)}
+/* ---- Animaciones ---- */
+@keyframes veKb{from{transform:scale(1)}to{transform:scale(1.09)}}
+@keyframes veFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes veShine{from{transform:translateX(-120%) skewX(-18deg)}to{transform:translateX(320%) skewX(-18deg)}}
+@keyframes veTab{0%{transform:scale(.7)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+@keyframes veWa{0%,100%{box-shadow:0 10px 30px -10px rgba(46,37,32,.5),0 0 0 0 rgba(102,116,75,.45)}50%{box-shadow:0 10px 30px -10px rgba(46,37,32,.5),0 0 0 12px rgba(102,116,75,0)}}
+.ve-hide{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
+.ve-hide.ve-on{opacity:1;transform:none}
+.ve-hide img{transform:scale(1.07);transition:transform 1.6s cubic-bezier(.2,.8,.2,1)}
+.ve-hide.ve-on img{transform:scale(1)}
+.ve-r{opacity:0;transform:translateX(-14px);transition:opacity .6s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
+.ve-r.ve-on{opacity:1;transform:none}
+.ve-r .ve-ic{transform:scale(.4) rotate(-20deg);transition:transform .7s cubic-bezier(.34,1.56,.64,1)}
+.ve-r.ve-on .ve-ic{transform:none}
+.ve-kb img,.ve-hide.ve-on .ve-kb img{animation:veKb 16s ease-in-out infinite alternate}
+.ve-float{animation:veFloat 5s ease-in-out infinite}
+.ve-shine{position:relative;overflow:hidden}
+.ve-shine::after{content:"";position:absolute;top:0;bottom:0;left:0;width:30%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent);animation:veShine 3.6s ease-in-out 1.2s infinite;pointer-events:none}
+.ve-head{transition:box-shadow .35s ease,padding .35s ease}
+.ve-head.ve-sc{box-shadow:0 8px 24px -16px rgba(46,37,32,.45);padding-top:10px!important;padding-bottom:9px!important}
+.ve-wa{animation:veWa 2.6s ease-in-out infinite}
+.ve-tabon svg{animation:veTab .5s cubic-bezier(.34,1.56,.64,1)}
+.ve-card{transition:transform .25s ease,box-shadow .25s ease}
+.ve-card:active{transform:scale(.98)}
+@media (max-width:360px){nav{padding:0 10px!important;gap:8px!important}nav a.ve-wa{width:54px!important;height:54px!important}nav button span{font-size:10px!important;white-space:nowrap;letter-spacing:-.01em}main{padding-left:16px!important;padding-right:16px!important}}
+@media (prefers-reduced-motion:reduce){.ve-hide,.ve-r,.ve-r .ve-ic,.ve-hide img{opacity:1!important;transform:none!important;transition:none!important}.ve-kb img,.ve-float,.ve-wa,.ve-shine::after,.ve-view{animation:none!important}}
+</style>
+</helmet>
+<div ref="{{ rootRef }}" style="font-family:'Montserrat',sans-serif;max-width:440px;min-height:100vh;margin:0 auto;background:#F7F2EA;position:relative;padding-bottom:120px;box-shadow:0 0 60px rgba(46,37,32,.08)">
+
+<!-- CABECERA -->
+<header class="ve-head" style="position:sticky;top:0;z-index:30;background:rgba(247,242,234,.92);backdrop-filter:blur(14px);padding:14px 20px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+  <button onClick="{{ go.inicio }}" aria-label="Victorias Eléctricas — Inicio" style="display:flex;align-items:center;gap:10px;color:#4A3A30">
+    <span role="img" aria-label="Victorias Eléctricas" style="width:124px;height:30px;background:currentColor;-webkit-mask:url(assets/logo-h.png) left center/contain no-repeat;mask:url(assets/logo-h.png) left center/contain no-repeat"></span>
+  </button>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span style="font-size:10.5px;line-height:1.3;color:#7A6A5E;text-align:right">Santa Fe de Antioquia<br><b style="font-weight:600;color:#4A3A30">y toda Colombia</b></span>
+    <label title="Idioma / Language" style="position:relative;display:flex;align-items:center;gap:5px;padding:8px 10px;border-radius:20px;background:#FFFFFF;box-shadow:inset 0 0 0 1px rgba(46,37,32,.1);color:#4A3A30;font-size:11px;font-weight:600;letter-spacing:.06em;cursor:pointer"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"></path></svg><span data-k="lang-code" data-notr="1">ES</span><select data-k="lang" aria-label="Idioma / Language" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:16px"></select></label>
+  </div>
+</header>
+
+<main style="padding:4px 22px 0">
+
+<!-- ========== INICIO ========== -->
+<sc-if value="{{ v.inicio }}" hint-placeholder-val="{{ true }}">
+<div class="ve-view" style="display:flex;flex-direction:column;gap:22px">
+  <div class="ve-frame"><span class="ve-dia" style="top:-5px;left:-5px"></span><span class="ve-dia" style="top:-5px;right:-5px"></span><span class="ve-dia" style="bottom:-5px;left:-5px"></span><span class="ve-dia" style="bottom:-5px;right:-5px"></span><span class="ve-gap" style="top:-7px;width:44%;max-width:176px"></span><span class="ve-gap" style="bottom:-7px;width:36%;max-width:146px"></span><img class="ve-ot" src="assets/orn-top.png" alt=""><img class="ve-ob" src="assets/orn-bottom.png" alt=""><div style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:#7A6A5E;margin-bottom:12px">Carrozas eléctricas · Colombia</div><p style="margin:0;text-align:center;font-family:'Baskervville',serif;font-size:28px;line-height:1.12;letter-spacing:-.01em;color:#2E2520"><span style="display:block;white-space:nowrap">Recorre la historia</span><span style="display:block;white-space:nowrap;font-style:italic;color:#A65B37">con una nueva energía.</span></p></div>
+
+  <!-- Tarjetas grandes -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <button onClick="{{ go.eventos }}" class="ve-tap" style="position:relative;height:190px;border-radius:24px;overflow:hidden;background:#F6E3D8;text-align:left">
+      <img src="assets/iglesia.jpg" alt="Novia en la Victoria frente a la iglesia" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+      <span style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(46,37,32,0) 40%,rgba(46,37,32,.75) 100%)"></span>
+      <span style="position:absolute;left:14px;right:14px;bottom:14px;display:flex;flex-direction:column;gap:2px;color:#F7F2EA"><b style="font-family:'Baskervville',serif;font-weight:500;font-size:24px;line-height:1">Eventos</b><span style="font-size:11px;opacity:.9">Bodas, quince, fotos</span></span>
+    </button>
+    <button onClick="{{ go.turismo }}" class="ve-tap" style="position:relative;height:190px;border-radius:24px;overflow:hidden;background:#E3E8D8;text-align:left">
+      <img src="assets/capilla.jpg" alt="Paseo en la Victoria frente a una capilla de piedra" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+      <span style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(46,37,32,0) 40%,rgba(46,37,32,.75) 100%)"></span>
+      <span style="position:absolute;left:14px;right:14px;bottom:14px;display:flex;flex-direction:column;gap:2px;color:#F7F2EA"><b style="font-family:'Baskervville',serif;font-weight:500;font-size:24px;line-height:1">Turismo</b><span style="font-size:11px;opacity:.9">Recorridos por el pueblo</span></span>
+    </button>
+  </div>
+
+  <!-- Accesos pequeños -->
+  <div class="ve-scroll" style="margin:0;padding:0">
+    <sc-for list="{{ shortcuts }}" as="s" hint-placeholder-count="4">
+      <button onClick="{{ s.go }}" class="ve-tap" style="width:108px;display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 8px 14px;border-radius:20px;background:#FFFFFF;box-shadow:0 1px 0 rgba(46,37,32,.06)">
+        <span style="width:84px;height:62px;border-radius:14px;overflow:hidden;background:#FBF1E2"><img src="{{ s.img }}" alt="" style="width:100%;height:100%;object-fit:cover;object-position:{{ s.pos }};display:block"></span>
+        <span style="font-size:12px;font-weight:500;line-height:1.2;text-align:center;color:#2E2520">{{ s.t }}</span>
+      </button>
+    </sc-for>
+  </div>
+
+  <!-- Carrusel -->
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div data-k="car" class="ve-scroll" style="margin:0;padding:0">
+      <sc-for list="{{ promos }}" as="p" hint-placeholder-count="3">
+        <button onClick="{{ p.go }}" class="ve-tap" style="width:100%;border-radius:26px;overflow:hidden;background:{{ p.bg }};text-align:left;display:flex;flex-direction:column">
+          <span style="position:relative;display:block;height:220px"><img src="{{ p.img }}" alt="{{ p.alt }}" style="width:100%;height:100%;object-fit:cover;object-position:{{ p.pos }};display:block"><span style="position:absolute;top:12px;left:12px;background:#A65B37;color:#F7F2EA;font-size:11px;font-weight:600;padding:6px 12px;border-radius:30px">{{ p.tag }}</span></span>
+          <span style="display:flex;flex-direction:column;gap:6px;padding:16px 18px 18px"><b style="font-family:'Baskervville',serif;font-weight:600;font-size:24px;line-height:1.05;color:#4A3A30">{{ p.t }}</b><span style="font-size:13px;line-height:1.4;color:#5E5048">{{ p.d }}</span><span style="margin-top:4px;font-size:12px;font-weight:600;color:#A65B37">{{ p.cta }} →</span></span>
+        </button>
+      </sc-for>
+    </div>
+    <div style="display:flex;justify-content:center;gap:6px">
+      <sc-for list="{{ promos }}" as="p" hint-placeholder-count="3"><span data-k="dot" style="width:7px;height:7px;border-radius:50%;background:rgba(46,37,32,.2);transition:background-color .3s,width .3s"></span></sc-for>
+    </div>
+  </div>
+
+  <div class="ve-div" aria-hidden="true"><span></span><img src="assets/orn-bottom.png" alt=""><span></span></div>
+  <!-- La Victoria -->
+  <div id="la-victoria" style="display:flex;flex-direction:column;gap:20px;scroll-margin-top:80px">
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#A65B37"><span style="width:24px;height:1px;background:#A65B37"></span>Conoce la Victoria<span style="width:24px;height:1px;background:#A65B37"></span></div>
+    <div class="ve-kb" style="position:relative;height:300px;border-radius:999px 999px 26px 26px;overflow:hidden"><img src="assets/ve-cochero-timon.jpg" alt="El cochero al timón de la Victoria" style="width: 100%; height: 100%; object-fit: cover; display: block; object-position: 50% 25.9444%"></div>
+    <div style="text-align:center;padding:0 6px"><div style="font-family:'Baskervville',serif;font-weight:500;font-size:30px;line-height:1.02;color:#4A3A30;text-wrap:balance">¿Una carroza sin caballos? <i style="color:#A65B37">Sí, y hay una razón.</i></div><p style="margin:10px 0 0;font-size:13.5px;line-height:1.55;color:#5E5048">Una unidad eléctrica con chasis propio, hecha a mano y configurada para el terreno donde va a trabajar.</p></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+      <sc-for list="{{ stats }}" as="s" hint-placeholder-count="3">
+        <div style="background:#2E2520;color:#F7F2EA;border-radius:18px;padding:16px 10px;display:flex;flex-direction:column;align-items:center;gap:4px"><b style="font-family:'Baskervville',serif;font-weight:500;font-size:30px;line-height:1">{{ s.v }}</b><span style="font-size:10px;text-align:center;opacity:.75">{{ s.k }}</span></div>
+      </sc-for>
+    </div>
+    <div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px"><b style="font-family:'Baskervville',serif;font-weight:600;font-size:22px;color:#4A3A30">Se adapta a cada terreno</b><span style="display:flex;gap:8px;flex:none"><button onClick="{{ terrPrev }}" aria-label="Anterior" class="ve-tap" style="width:38px;height:38px;border-radius:50%;background:#FFFFFF;color:#A65B37;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px -6px rgba(46,37,32,.4),inset 0 0 0 1px rgba(46,37,32,.08)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="animation:veNudgeL 1.4s ease-in-out infinite"><path d="M15 6l-6 6 6 6"></path></svg></button><button onClick="{{ terrNext }}" aria-label="Siguiente" class="ve-tap" style="width:38px;height:38px;border-radius:50%;background:#FFFFFF;color:#A65B37;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px -6px rgba(46,37,32,.4),inset 0 0 0 1px rgba(46,37,32,.08)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="animation:veNudge 1.4s ease-in-out infinite"><path d="M9 6l6 6-6 6"></path></svg></button></span></div>
+      <div data-k="terr" class="ve-scroll" style="margin:0;padding:0;scroll-behavior:smooth">
+        <sc-for list="{{ terrains }}" as="t" hint-placeholder-count="4">
+          <div style="width:220px;border-radius:20px;overflow:hidden;background:#FFFFFF"><img src="{{ t.img }}" alt="{{ t.t }}" style="width:100%;aspect-ratio:3/2;object-fit:cover;display:block"><div style="padding:10px 14px 14px"><b style="font-size:14px">{{ t.t }}</b><div style="font-size:11.5px;color:#7A6A5E;margin-top:3px">{{ t.d }}</div></div></div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center;background:#FFFFFF;border-radius:20px;padding:16px">
+      <span style="flex:none;display:flex"><span style="width:22px;height:22px;border-radius:50%;background:#A65B37"></span><span style="width:22px;height:22px;border-radius:50%;background:#66744B;margin-left:-6px"></span><span style="width:22px;height:22px;border-radius:50%;background:#C9B46A;margin-left:-6px"></span><span style="width:22px;height:22px;border-radius:50%;background:#F2ECE2;margin-left:-6px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.1)"></span></span>
+      <span style="font-size:13px;line-height:1.4">Carrocería y cojinería <b>en los colores que elijas.</b></span>
+    </div>
+  </div>
+
+  <div class="ve-div" aria-hidden="true"><span></span><img src="assets/orn-bottom.png" alt=""><span></span></div>
+  <!-- Colombia -->
+  <div style="display:flex;align-items:center;gap:14px;background:#4A3A30;color:#F7F2EA;border-radius:22px;padding:16px 18px">
+    <span style="flex:none;width:44px;height:30px;border-radius:4px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 0 0 2px rgba(247,242,234,.25)"><span style="flex:2;background:#FCD116"></span><span style="flex:1;background:#003893"></span><span style="flex:1;background:#CE1126"></span></span>
+    <span style="display:flex;flex-direction:column;gap:2px"><b style="font-family:'Baskervville',serif;font-weight:500;font-size:19px;line-height:1.1">Llegamos a donde tú quieras</b><span style="font-size:12px;opacity:.8">Pueblos, haciendas y fincas de toda Colombia</span></span>
+  </div>
+</div>
+</sc-if>
+
+<!-- ========== EVENTOS ========== -->
+<sc-if value="{{ v.eventos }}" hint-placeholder-val="{{ false }}">
+<div class="ve-view" style="display:flex;flex-direction:column;gap:22px">
+  <div class="ve-kb" style="position:relative;height:230px;border-radius:26px;overflow:hidden">
+    <img src="assets/ve-epoca-2.jpg" alt="Pareja de época junto a la Victoria" style="width:100%;height:100%;object-fit:cover;display:block">
+    <span style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(46,37,32,0) 30%,rgba(46,37,32,.8) 100%)"></span>
+    <div style="position:absolute;left:18px;right:18px;bottom:18px;color:#F7F2EA"><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.85">Alquiler para eventos</div><div style="font-family:'Baskervville',serif;font-weight:500;font-size:30px;line-height:1.02;margin-top:6px">Para tus momentos <i>especiales.</i></div></div>
+  </div>
+  <div class="ve-frame"><span class="ve-dia" style="top:-5px;left:-5px"></span><span class="ve-dia" style="top:-5px;right:-5px"></span><span class="ve-dia" style="bottom:-5px;left:-5px"></span><span class="ve-dia" style="bottom:-5px;right:-5px"></span><span class="ve-gap" style="top:-7px;width:44%;max-width:176px"></span><span class="ve-gap" style="bottom:-7px;width:36%;max-width:146px"></span><img class="ve-ot" src="assets/orn-top.png" alt=""><img class="ve-ob" src="assets/orn-bottom.png" alt=""><p style="margin:0;text-align:center;text-wrap:pretty;font-size:14px;line-height:1.55;color:#5E5048">Tú organizas el evento; nosotros llevamos la carroza. Pueblos, haciendas, fincas y hoteles de toda Colombia.</p></div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <sc-for list="{{ occasions }}" as="o" hint-placeholder-count="6">
+      <div style="border-radius:20px;overflow:hidden;background:#FFFFFF">
+        <img src="{{ o.img }}" alt="{{ o.t }}" style="width:100%;height:132px;object-fit:cover;object-position:{{ o.pos }};display:block">
+        <div style="padding:10px 12px 14px"><b style="font-family:'Baskervville',serif;font-weight:500;font-size:18px;line-height:1.1;color:#4A3A30">{{ o.t }}</b><div style="margin-top:4px;font-size:11.5px;line-height:1.4;color:#7A6A5E">{{ o.d }}</div></div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div class="ve-div" aria-hidden="true"><span></span><img src="assets/orn-bottom.png" alt=""><span></span></div>
+  <div style="background:#FFFFFF;border-radius:24px;padding:20px 18px;display:flex;flex-direction:column;gap:14px">
+    <b style="display:block;text-align:center;font-family:'Baskervville',serif;font-weight:600;font-size:22px;color:#4A3A30">Así funciona</b>
+    <sc-for list="{{ evSteps }}" as="s" hint-placeholder-count="4">
+      <div class="ve-r" style="display:flex;gap:14px;align-items:center"><span class="ve-ic" style="flex:none;width:38px;height:38px;border-radius:50%;background:#F6E3D8;color:#A65B37;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ s.ic }}"></path></svg></span><div><div style="font-weight:600;font-size:14px;color:#2E2520">{{ s.t }}</div><div style="font-size:12.5px;line-height:1.45;color:#7A6A5E;margin-top:2px">{{ s.d }}</div></div></div>
+    </sc-for>
+  </div>
+  <a href="https://wa.me/573104454194?text=Hola%2C%20quiero%20reservar%20la%20Victoria%20para%20mi%20evento" target="_blank" class="ve-tap ve-shine" style="display:flex;justify-content:center;align-items:center;gap:10px;background:#4A3A30;color:#F7F2EA;border-radius:18px;padding:17px;font-weight:600;font-size:14px">Reservar para mi evento</a>
+</div>
+</sc-if>
+
+<!-- ========== TURISMO ========== -->
+<sc-if value="{{ v.turismo }}" hint-placeholder-val="{{ false }}">
+<div class="ve-view" style="display:flex;flex-direction:column;gap:22px">
+  <div class="ve-kb" style="position:relative;height:230px;border-radius:26px;overflow:hidden">
+    <img src="assets/muro.jpg" alt="Pasajera paseando en la Victoria por el pueblo" style="width:100%;height:100%;object-fit:cover;object-position:50% 42%;display:block">
+    <span style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(46,37,32,0) 30%,rgba(46,37,32,.8) 100%)"></span>
+    <div style="position:absolute;left:18px;right:18px;bottom:18px;color:#F7F2EA"><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.85">Recorridos turísticos</div><div style="font-family:'Baskervville',serif;font-weight:500;font-size:30px;line-height:1.02;margin-top:6px">Recorre el pueblo <i>en Victoria.</i></div></div>
+  </div>
+  <div class="ve-frame"><span class="ve-dia" style="top:-5px;left:-5px"></span><span class="ve-dia" style="top:-5px;right:-5px"></span><span class="ve-dia" style="bottom:-5px;left:-5px"></span><span class="ve-dia" style="bottom:-5px;right:-5px"></span><span class="ve-gap" style="top:-7px;width:44%;max-width:176px"></span><span class="ve-gap" style="bottom:-7px;width:36%;max-width:146px"></span><img class="ve-ot" src="assets/orn-top.png" alt=""><img class="ve-ob" src="assets/orn-bottom.png" alt=""><p style="margin:0;text-align:center;text-wrap:pretty;font-size:14px;line-height:1.55;color:#5E5048"><b style="display:block;font-family:'Baskervville',serif;font-weight:500;font-size:21px;color:#4A3A30;margin-bottom:8px">Nosotros te llevamos.</b>Súbete a la Victoria y recorre el centro histórico con un cochero que conoce cada calle, cada capilla y cada historia del pueblo.</p></div>
+
+  <div class="ve-div" aria-hidden="true"><span></span><img src="assets/orn-bottom.png" alt=""><span></span></div>
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <b style="display:block;text-align:center;font-family:'Baskervville',serif;font-weight:600;font-size:22px;color:#4A3A30">Elige tu recorrido</b>
+    <sc-for list="{{ tours }}" as="t" hint-placeholder-count="3">
+      <div class="ve-r ve-card" style="background:#FFFFFF;border-radius:22px;overflow:hidden;box-shadow:0 10px 24px -18px rgba(46,37,32,.5)">
+        <div style="position:relative;height:170px;overflow:hidden"><img src="{{ t.img }}" alt="{{ t.alt }}" style="width:100%;height:100%;object-fit:cover;object-position:{{ t.pos }};display:block"><span style="position:absolute;top:12px;left:12px;background:rgba(247,242,234,.92);color:#A65B37;border-radius:20px;padding:6px 11px;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase">{{ t.when }}</span></div>
+        <div style="padding:14px 16px 16px;display:flex;gap:12px;align-items:flex-start"><span class="ve-ic" style="flex:none;width:38px;height:38px;border-radius:50%;background:#F6E3D8;color:#A65B37;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ t.ic }}"></path></svg></span><div><b style="font-family:'Baskervville',serif;font-weight:600;font-size:20px;color:#4A3A30">{{ t.t }}</b><div style="font-size:12.5px;line-height:1.45;color:#7A6A5E;margin-top:3px">{{ t.d }}</div></div></div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div class="ve-div" aria-hidden="true"><span></span><img src="assets/orn-bottom.png" alt=""><span></span></div>
+  <div style="background:#4A3A30;color:#F7F2EA;border-radius:24px;padding:22px 18px;display:flex;flex-direction:column;gap:4px">
+    <b style="display:block;text-align:center;font-family:'Baskervville',serif;font-weight:500;font-size:23px;margin-bottom:10px">Así es tu recorrido</b>
+    <sc-for list="{{ tourSteps }}" as="s" hint-placeholder-count="5">
+      <div class="ve-r" style="display:flex;gap:14px;align-items:center;padding:10px 0;border-top:1px solid rgba(247,242,234,.12)"><span class="ve-ic" style="flex:none;width:36px;height:36px;border-radius:50%;background:rgba(201,180,106,.16);color:#C9B46A;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ s.ic }}"></path></svg></span><div><div style="font-weight:600;font-size:14px">{{ s.t }}</div><div style="font-size:12.5px;line-height:1.45;opacity:.75;margin-top:2px">{{ s.d }}</div></div></div>
+    </sc-for>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+    <sc-for list="{{ tourInfo }}" as="u" hint-placeholder-count="4">
+      <div class="ve-r" style="background:{{ u.bg }};border-radius:18px;padding:14px;display:flex;align-items:center;gap:10px"><span class="ve-ic" style="flex:none;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.65);color:#A65B37;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ u.ic }}"></path></svg></span><b style="font-weight:600;font-size:12.5px;line-height:1.3;color:#2E2520">{{ u.t }}</b></div>
+    </sc-for>
+  </div>
+
+  <a href="https://wa.me/573104454194?text=Hola%2C%20quiero%20reservar%20un%20recorrido%20en%20la%20Victoria" target="_blank" class="ve-tap ve-shine" style="display:flex;justify-content:center;align-items:center;background:#A65B37;color:#F7F2EA;border-radius:18px;padding:17px;font-weight:600;font-size:14px">Reservar mi recorrido</a>
+
+  <button onClick="{{ toComprar }}" class="ve-tap" style="display:flex;align-items:center;gap:12px;background:#E3E8D8;border-radius:20px;padding:14px 16px;text-align:left"><span style="flex:1;display:flex;flex-direction:column;gap:2px"><b style="font-size:13.5px;color:#2E2520">¿Tienes un negocio turístico?</b><span style="font-size:12px;color:#5E5048">Ten tu propia Victoria para tu pueblo.</span></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#66744B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>
+</div>
+</sc-if>
+
+<!-- ========== TU VICTORIA ========== -->
+<sc-if value="{{ v.victoria }}" hint-placeholder-val="{{ false }}">
+<div class="ve-view" style="display:flex;flex-direction:column;gap:20px">
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:4px;background:#EDE4D7;border-radius:16px;padding:4px">
+    <button onClick="{{ sub.comprar }}" style="padding:11px 4px;border-radius:12px;font-size:12.5px;font-weight:600;background:{{ subBg.comprar }};color:{{ subFg.comprar }}">Comprar</button>
+    <button onClick="{{ sub.convertir }}" style="padding:11px 4px;border-radius:12px;font-size:12.5px;font-weight:600;background:{{ subBg.convertir }};color:{{ subFg.convertir }}">Convertir</button>
+    
+  </div>
+
+  <!-- Comprar -->
+  <sc-if value="{{ sv.comprar }}" hint-placeholder-val="{{ true }}">
+  <div class="ve-view" style="display:flex;flex-direction:column;gap:20px">
+    <div style="position:relative;border-radius:26px;overflow:hidden;background:#FBF6EE;padding:14px">
+      <img src="assets/ve-carroza-flores.jpg" alt="La Victoria con flores frente a la iglesia" style="width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:14px;display:block">
+      <div style="padding:14px 4px 4px;text-align:center"><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#A65B37">Una oportunidad de negocio</div><div style="font-family:'Baskervville',serif;font-weight:500;font-size:30px;line-height:1.02;margin-top:6px;color:#4A3A30">Ten tu propia <i style="color:#A65B37">Victoria.</i></div><p style="margin:10px 0 0;font-size:13.5px;line-height:1.55;color:#5E5048">Recorridos turísticos, eventos, sesiones de fotos y activaciones de marca, con el respaldo de Victorias Eléctricas.</p></div>
+    </div>
+    <div class="ve-div" aria-hidden="true"><span></span><img src="assets/orn-bottom.png" alt=""><span></span></div>
+    <div style="background:#FFFFFF;border-radius:24px;padding:20px 18px">
+      <b style="display:block;text-align:center;font-family:'Baskervville',serif;font-weight:600;font-size:22px;color:#4A3A30">Incluye</b>
+      <div style="display:flex;flex-direction:column;margin-top:8px">
+        <sc-for list="{{ includes }}" as="i" hint-placeholder-count="6">
+          <div class="ve-r" style="display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(46,37,32,.07);font-size:13.5px"><span class="ve-ic" style="flex:none;width:32px;height:32px;border-radius:50%;background:#E3E8D8;color:#66744B;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ i.ic }}"></path></svg></span>{{ i.t }}</div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="background:#FFFFFF;border-radius:24px;padding:20px 18px;display:flex;flex-direction:column;gap:14px">
+      <b style="display:block;text-align:center;font-family:'Baskervville',serif;font-weight:600;font-size:22px;color:#4A3A30">Cómo adquirirla</b>
+      <sc-for list="{{ buySteps }}" as="s" hint-placeholder-count="5">
+        <div class="ve-r" style="display:flex;gap:14px;align-items:center"><span class="ve-ic" style="flex:none;width:38px;height:38px;border-radius:50%;background:#F6E3D8;color:#A65B37;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ s.ic }}"></path></svg></span><div><div style="font-weight:600;font-size:14px">{{ s.t }}</div><div style="font-size:12.5px;line-height:1.45;color:#7A6A5E;margin-top:2px">{{ s.d }}</div></div></div>
+      </sc-for>
+    </div>
+    <a href="https://wa.me/573104454194?text=Hola%2C%20quiero%20cotizar%20mi%20propia%20Victoria" target="_blank" class="ve-tap ve-shine" style="display:flex;justify-content:center;background:#4A3A30;color:#F7F2EA;border-radius:18px;padding:17px;font-weight:600;font-size:14px">Cotizar mi Victoria</a>
+  </div>
+  </sc-if>
+
+  <!-- Convertir -->
+  <sc-if value="{{ sv.convertir }}" hint-placeholder-val="{{ false }}">
+  <div class="ve-view" style="display:flex;flex-direction:column;gap:20px">
+    <div style="background:#2E2520;color:#F7F2EA;border-radius:26px;padding:22px 18px;display:flex;flex-direction:column;gap:10px;text-align:center">
+      <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#C9B46A">Conversión eléctrica</div>
+      <div style="font-family:'Baskervville',serif;font-weight:500;font-size:30px;line-height:1.02">De tracción <s style="opacity:.55">animal</s> a tracción <i style="color:#E8B98F">eléctrica.</i></div>
+      <img class="ve-float" src="assets/carroza-boceto.png" alt="Boceto de la Victoria" style="width:80%;align-self:center;filter:invert(1);mix-blend-mode:screen;opacity:.9;margin:6px 0">
+      <p style="margin:0;font-size:13.5px;line-height:1.55;opacity:.8">Mantienes el coche, el cochero y el recorrido; solo cambia el caballo por un motor eléctrico.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div style="background:#FFFFFF;border-radius:20px;padding:16px 14px"><b style="display:block;text-align:center;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#7A6A5E">Cambia</b><sc-for list="{{ changes }}" as="c" hint-placeholder-count="4"><div style="font-size:13px;line-height:1.35;margin-top:10px">{{ c }}</div></sc-for></div>
+      <div style="background:#E3E8D8;border-radius:20px;padding:16px 14px"><b style="display:block;text-align:center;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#66744B">Se queda</b><sc-for list="{{ stays }}" as="c" hint-placeholder-count="4"><div style="font-size:13px;line-height:1.35;margin-top:10px">{{ c }}</div></sc-for></div>
+    </div>
+    <div class="ve-div" aria-hidden="true"><span></span><img src="assets/orn-bottom.png" alt=""><span></span></div>
+    <div style="background:#FFFFFF;border-radius:24px;padding:20px 18px;display:flex;flex-direction:column;gap:14px">
+      <b style="display:block;text-align:center;font-family:'Baskervville',serif;font-weight:600;font-size:22px;color:#4A3A30">Así se convierte un coche</b>
+      <sc-for list="{{ convSteps }}" as="s" hint-placeholder-count="6">
+        <div class="ve-r" style="display:flex;gap:14px;align-items:center"><span class="ve-ic" style="flex:none;width:38px;height:38px;border-radius:50%;background:#F6E3D8;color:#A65B37;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ s.ic }}"></path></svg></span><div><div style="font-weight:600;font-size:14px">{{ s.t }}</div><div style="font-size:12.5px;line-height:1.45;color:#7A6A5E;margin-top:2px">{{ s.d }}</div></div></div>
+      </sc-for>
+    </div>
+    <a href="https://wa.me/573104454194?text=Hola%2C%20quiero%20convertir%20mi%20coche%20en%20una%20Victoria%20el%C3%A9ctrica" target="_blank" class="ve-tap ve-shine" style="display:flex;justify-content:center;background:#4A3A30;color:#F7F2EA;border-radius:18px;padding:17px;font-weight:600;font-size:14px">Convertir mi coche</a>
+  </div>
+  </sc-if>
+
+</div>
+</sc-if>
+
+<!-- CONTACTO (pie) -->
+<div style="margin-top:28px;padding:20px 0 6px;border-top:1px solid rgba(46,37,32,.1);display:flex;flex-direction:column;align-items:center;gap:10px;font-size:12px;color:#7A6A5E;text-align:center">
+  <span style="display:flex;gap:14px"><a href="https://wa.me/573104454194" target="_blank" style="color:#4A3A30;font-weight:600">310 445 4194</a><span>·</span><a href="https://wa.me/573009895898" target="_blank" style="color:#4A3A30;font-weight:600">300 989 5898</a></span>
+  <a href="https://www.instagram.com/victorias_electricas/" target="_blank" style="display:flex;align-items:center;gap:6px;color:#4A3A30"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"></circle></svg>@victorias_electricas</a>
+</div>
+</main>
+
+<!-- VOLVER ARRIBA -->
+<sc-if value="{{ showTop }}" hint-placeholder-val="{{ false }}">
+<button onClick="{{ toTop }}" style="position:fixed;left:50%;top:76px;z-index:40;transform:translateX(-50%);animation:vePop .3s ease both;display:flex;align-items:center;gap:8px;background:#2E2520;color:#F7F2EA;padding:10px 18px;border-radius:30px;font-size:13px;font-weight:600;box-shadow:0 8px 20px -8px rgba(0,0,0,.5)"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"></path></svg>Volver arriba</button>
+</sc-if>
+
+<!-- MENÚ INFERIOR -->
+<nav style="position:fixed;left:50%;bottom:14px;z-index:50;transform:translateX(-50%);width:min(440px,100%);padding:0 14px;display:flex;align-items:center;gap:10px">
+  <div style="flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:2px;padding:6px;border-radius:40px;background:rgba(255,255,255,.88);backdrop-filter:blur(18px);box-shadow:0 10px 30px -10px rgba(46,37,32,.35),inset 0 0 0 1px rgba(46,37,32,.06)">
+    <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+      <button onClick="{{ t.go }}" aria-label="{{ t.t }}" class="{{ t.cls }}" style="display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 2px 8px;border-radius:30px;background:{{ t.bg }};color:{{ t.fg }};transition:background-color .25s,color .25s">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ t.icon }}"></path></svg>
+        <span style="font-size:11px;font-weight:600">{{ t.t }}</span>
+      </button>
+    </sc-for>
+  </div>
+  <a href="https://wa.me/573104454194?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20la%20Victoria" target="_blank" aria-label="Escribir por WhatsApp" class="ve-tap ve-wa" style="flex:none;width:64px;height:64px;border-radius:50%;background:#66744B;color:#F7F2EA;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px -10px rgba(46,37,32,.5)">
+    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"></path><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 1c-1-.4-2-1.4-2.4-2.4l1-1-1-2-1.6 1.4z"></path></svg>
+  </a>
+</nav>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  rootRef = React.createRef();
+  state = { tab: 'inicio', sub: 'comprar', showTop: false };
+  componentDidMount() {
+    this.onScroll = () => { const st = scrollY > 320; if (st !== this.state.showTop) this.setState({ showTop: st }); };
+    addEventListener('scroll', this.onScroll, { passive: true });
+    this.onCar = e => {
+      const el = e.target; if (!el || !el.dataset || el.dataset.k !== 'car') return;
+      const i = Math.round(el.scrollLeft / Math.max(1, el.firstElementChild ? el.firstElementChild.offsetWidth + 12 : el.clientWidth));
+      const dots = this.rootRef.current ? [...this.rootRef.current.querySelectorAll('[data-k="dot"]')] : [];
+      dots.forEach((d, k) => { d.style.background = k === i ? '#A65B37' : 'rgba(46,37,32,.2)'; d.style.width = k === i ? '18px' : '7px'; d.style.borderRadius = '6px'; });
+    };
+    document.addEventListener('scroll', this.onCar, true);
+    this.lastTouch = 0;
+    this.onTouch = e => { if (e.target && e.target.closest && e.target.closest('[data-k="car"]')) this.lastTouch = Date.now(); };
+    document.addEventListener('pointerdown', this.onTouch, true); document.addEventListener('touchstart', this.onTouch, { capture: true, passive: true });
+    this.autoT = setInterval(() => {
+      if (Date.now() - this.lastTouch < 6000) return;
+      const el = this.rootRef.current && this.rootRef.current.querySelector('[data-k="car"]'); if (!el || !el.clientWidth) return;
+      const w = el.firstElementChild ? el.firstElementChild.offsetWidth + 12 : el.clientWidth;
+      const end = el.scrollLeft + el.clientWidth >= el.scrollWidth - 4;
+      el.scrollTo({ left: end ? 0 : el.scrollLeft + w, behavior: 'smooth' });
+    }, 5000);
+    setTimeout(() => this.onCar({ target: this.rootRef.current && this.rootRef.current.querySelector('[data-k="car"]') }), 300);
+    this.setupReveal();
+    this.setupI18n();
+  }
+  setupI18n() {
+    const root = this.rootRef.current; if (!root) return;
+    const sel = root.querySelector('[data-k="lang"]'), codeEl = root.querySelector('[data-k="lang-code"]');
+    const LANGS = [['es', 'Español'], ['en', 'English'], ['zh', '中文'], ['hi', 'हिन्दी'], ['ar', 'العربية'], ['fr', 'Français'], ['bn', 'বাংলা'], ['pt', 'Português'], ['ru', 'Русский'], ['ur', 'اردو']];
+    if (sel) sel.innerHTML = LANGS.map(([v, t]) => `<option value="${v}">${t}</option>`).join('');
+    let DICT = null, lang = 'es', busy = false; const orig = new WeakMap();
+    const norm = t => t.replace(/\s+/g, ' ').trim();
+    const tr = k => (DICT && DICT[lang] && Object.prototype.hasOwnProperty.call(DICT[lang], k)) ? DICT[lang][k] : null;
+    const doNode = n => {
+      const pe = n.parentElement; if (!pe || pe.closest('script,style,select,[data-notr]')) return;
+      const src = orig.has(n) ? orig.get(n) : n.nodeValue;
+      if (lang !== 'es') { const v0 = tr(norm(src)); if (v0 !== null) { if (!orig.has(n)) orig.set(n, src); const v = src.match(/^\s*/)[0] + v0 + src.match(/\s*$/)[0]; if (n.nodeValue !== v) n.nodeValue = v; return; } }
+      if (orig.has(n)) { if (n.nodeValue !== orig.get(n)) n.nodeValue = orig.get(n); orig.delete(n); }
+    };
+    const walk = el => { const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT); let n; while ((n = w.nextNode())) doNode(n); };
+    const load = () => DICT ? Promise.resolve() : fetch('assets/i18n.json').then(r => r.json()).then(d => { DICT = d; }).catch(() => { DICT = {}; });
+    const apply = (l, quiet) => load().then(() => {
+      lang = l || 'es'; busy = true; walk(root); busy = false;
+      document.documentElement.lang = lang; document.documentElement.dir = (lang === 'ar' || lang === 'ur') ? 'rtl' : 'ltr';
+      if (codeEl) codeEl.textContent = lang.toUpperCase(); if (sel) sel.value = lang;
+      if (!quiet) { try { localStorage.setItem('ve-lang', lang); } catch (e) {} try { if (parent !== window) parent.postMessage({ veLang: lang }, '*'); } catch (e) {} }
+    });
+    this.i18nMo = new MutationObserver(ms => { if (busy || lang === 'es') return; busy = true; ms.forEach(m => { if (m.type === 'characterData') { const n = m.target; if (orig.has(n) && tr(norm(orig.get(n))) === norm(n.nodeValue)) return; orig.delete(n); doNode(n); } else m.addedNodes.forEach(x => { if (x.nodeType === 3) doNode(x); else if (x.nodeType === 1) walk(x); }); }); busy = false; });
+    this.i18nMo.observe(root, { childList: true, subtree: true, characterData: true });
+    if (sel) sel.addEventListener('change', () => apply(sel.value));
+    this.onI18nMsg = e => { if (e.data && e.data.veLang && e.data.veLang !== lang) apply(e.data.veLang, true); };
+    this.onI18nStorage = e => { if (e.key === 've-lang' && e.newValue && e.newValue !== lang) apply(e.newValue, true); };
+    addEventListener('message', this.onI18nMsg); addEventListener('storage', this.onI18nStorage);
+    let saved = 'es'; try { saved = localStorage.getItem('ve-lang') || 'es'; } catch (e) {}
+    if (saved !== 'es') setTimeout(() => apply(saved, true), 200);
+  }
+  setupReveal() {
+    const root = this.rootRef.current; if (!root) return;
+    const head = root.querySelector('.ve-head');
+    this.onHead = () => { if (head) head.classList.toggle('ve-sc', scrollY > 12); };
+    addEventListener('scroll', this.onHead, { passive: true }); this.onHead();
+    if (!('IntersectionObserver' in window)) return;
+    this.io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('ve-on'); this.io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px', threshold: .08 });
+    this.scan = () => {
+      const r = this.rootRef.current; if (!r) return;
+      r.querySelectorAll('.ve-view > *:not(.ve-view):not(sc-if), main > div:last-child, .ve-r').forEach(el => {
+        if (el.dataset.rv) return; el.dataset.rv = '1';
+        if (!el.classList.contains('ve-r')) el.classList.add('ve-hide');
+        const sib = el.classList.contains('ve-r') ? [...el.parentNode.children].filter(c => c.classList.contains('ve-r')).indexOf(el) : 0;
+        el.style.transitionDelay = Math.min(sib, 6) * 90 + 'ms';
+        this.io.observe(el);
+      });
+    };
+    this.scan();
+    this.mo = new MutationObserver(() => { clearTimeout(this.scanT); this.scanT = setTimeout(this.scan, 30); });
+    this.mo.observe(root, { childList: true, subtree: true });
+  }
+  componentDidUpdate(pp, ps) {
+    if (ps.tab !== this.state.tab && this.state.tab === 'inicio') setTimeout(() => this.onCar({ target: this.rootRef.current && this.rootRef.current.querySelector('[data-k="car"]') }), 100);
+  }
+  componentWillUnmount() { if (this.i18nMo) this.i18nMo.disconnect(); removeEventListener('message', this.onI18nMsg); removeEventListener('storage', this.onI18nStorage); removeEventListener('scroll', this.onScroll); removeEventListener('scroll', this.onHead); if (this.io) this.io.disconnect(); if (this.mo) this.mo.disconnect(); document.removeEventListener('scroll', this.onCar, true); document.removeEventListener('pointerdown', this.onTouch, true); document.removeEventListener('touchstart', this.onTouch, true); clearInterval(this.autoT); }
+  renderVals() {
+    const tab = this.state.tab, sub = this.state.sub;
+    const go = k => () => { this.setState({ tab: k }); scrollTo({ top: 0 }); };
+    const goSub = k => () => { this.setState({ tab: 'victoria', sub: k }); scrollTo({ top: 0 }); };
+    const toFicha = () => { this.setState({ tab: 'inicio' }, () => setTimeout(() => { const t = this.rootRef.current && this.rootRef.current.querySelector('#la-victoria'); if (t) t.scrollIntoView({ behavior: 'smooth' }); }, 60)); };
+    const icons = {
+      inicio: 'M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z',
+      eventos: 'M12 3l2.4 5 5.6.8-4 3.9.9 5.5-4.9-2.6-4.9 2.6.9-5.5-4-3.9 5.6-.8z',
+      turismo: 'M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21zM12 12a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z',
+      victoria: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM12 3v7M12 14v7M3 12h7M14 12h7M5.6 5.6l5 5M13.4 13.4l5 5M18.4 5.6l-5 5M10.6 13.4l-5 5'
+    };
+    const tabs = [['inicio', 'Inicio'], ['eventos', 'Eventos'], ['turismo', 'Turismo'], ['victoria', 'Tu Victoria']].map(([k, t]) => ({ t, icon: icons[k], go: go(k), bg: tab === k ? '#F6E3D8' : 'transparent', cls: tab === k ? 've-tabon' : '', fg: tab === k ? '#A65B37' : '#4A3A30' }));
+    const on = k => sub === k;
+    return {
+      rootRef: this.rootRef,
+      v: { inicio: tab === 'inicio', eventos: tab === 'eventos', turismo: tab === 'turismo', victoria: tab === 'victoria' },
+      sv: { comprar: on('comprar'), convertir: on('convertir'), ficha: on('ficha') },
+      go: { inicio: go('inicio'), eventos: go('eventos'), turismo: go('turismo') },
+      sub: { comprar: goSub('comprar'), convertir: goSub('convertir'), ficha: goSub('ficha') },
+      subBg: { comprar: on('comprar') ? '#FFFFFF' : 'transparent', convertir: on('convertir') ? '#FFFFFF' : 'transparent', ficha: on('ficha') ? '#FFFFFF' : 'transparent' },
+      subFg: { comprar: on('comprar') ? '#A65B37' : '#7A6A5E', convertir: on('convertir') ? '#A65B37' : '#7A6A5E', ficha: on('ficha') ? '#A65B37' : '#7A6A5E' },
+      tabs,
+      showTop: this.state.showTop,
+      toTop: () => scrollTo({ top: 0, behavior: 'smooth' }),
+      terrPrev: () => { const el = this.rootRef.current && this.rootRef.current.querySelector('[data-k="terr"]'); if (el) el.scrollBy({ left: -232, behavior: 'smooth' }); },
+      terrNext: () => { const el = this.rootRef.current && this.rootRef.current.querySelector('[data-k="terr"]'); if (el) { const end = el.scrollLeft + el.clientWidth >= el.scrollWidth - 4; el.scrollTo({ left: end ? 0 : el.scrollLeft + 232, behavior: 'smooth' }); } },
+      shortcuts: [
+        { t: 'Tu propia Victoria', img: 'assets/carroza.jpg', pos: '50% 50%', go: goSub('comprar') },
+        { t: 'Conversión eléctrica', img: 'assets/atardecer.jpg', pos: '50% 45%', go: goSub('convertir') },
+        { t: 'La Victoria', img: 'assets/frente.jpg', pos: '50% 60%', go: toFicha },
+        { t: 'Recorridos', img: 'assets/calle.jpg', pos: '50% 50%', go: go('turismo') }
+      ],
+      stats: [{ v: '4', k: 'pasajeros + conductor' }, { v: '50', k: 'km de autonomía' }, { v: '25', k: 'km/h máxima' }],
+      promos: [
+        { tag: 'Eventos', t: 'Bodas que llegan en Victoria', d: 'De la casa a la iglesia, de la iglesia a la recepción.', cta: 'Reservar', pos: '50% 30%', img: 'assets/ve-novia-sombrilla.jpg', alt: 'Novia con sombrilla en la Victoria', bg: '#FBEFE6', go: go('eventos') },
+        { tag: 'Negocio', t: 'Ten tu propia Victoria', d: 'Recorridos turísticos, eventos y fotos en tu pueblo.', cta: 'Conocer más', pos: '50% 55%', img: 'assets/ve-flores-iglesia.jpg', alt: 'La Victoria con flores frente a la iglesia', bg: '#F1F3EA', go: goSub('comprar') },
+        { tag: 'Conversión', t: 'Convierte tu coche de caballo', d: 'Mantienes el coche y el cochero, sin caballos.', cta: 'Ver cómo', pos: '50% 12%', img: 'assets/conductora.jpg', alt: 'Mujer al timón de la Victoria entre flores', bg: '#F5EFE3', go: goSub('convertir') }
+      ],
+      occasions: [
+        { t: 'Bodas', d: 'La entrada que todos recuerdan.', img: 'assets/plaza.jpg', pos: '50% 40%' },
+        { t: 'Quince años', d: 'Una entrada especial para la quinceañera.', img: 'assets/ve-dama-roja.jpg', pos: '50% 22%' },
+        { t: 'Sesiones de fotos', d: 'Preboda, retratos y producto.', img: 'assets/ve-abanico.jpg', pos: '50% 45%' },
+        { t: 'Paseos', d: 'Calles empedradas a un ritmo tranquilo.', img: 'assets/ve-subiendo.jpg', pos: '50% 25%' },
+        { t: 'Noches especiales', d: 'Aniversarios y propuestas.', img: 'assets/noche-pareja.jpg', pos: '50% 45%' },
+        { t: 'Eventos de marca', d: 'Lanzamientos y festivales.', img: 'assets/ve-epoca-1.jpg', pos: '50% 22%' }
+      ],
+      evSteps: [
+        { n: '1', t: 'Elegimos el lugar', ic: 'M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21zM12 12a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z', d: 'Revisamos calles, pendientes y accesos.' },
+        { n: '2', t: 'Trazamos el recorrido', ic: 'M6 21a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM18 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM8 19h7.5a3.5 3.5 0 0 0 0-7h-7a3.5 3.5 0 0 1 0-7H16', d: 'Salida, paradas para fotos y llegada.' },
+        { n: '3', t: 'Decoramos la Victoria', ic: 'M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM12 10a3 3 0 1 1 0-6 3 3 0 0 1 0 6zM12 14a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM10 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM14 12a3 3 0 1 0 6 0 3 3 0 0 0-6 0z', d: 'Flores, cintas y faroles a juego con tu evento.' },
+        { n: '4', t: 'El paseo', ic: 'M6.5 20a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM17.5 20a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6.5 14l2-7h7l2.5 7M9 7V4h4', d: 'Un conductor de guayabera y un recorrido tranquilo.' }
+      ],
+      tours: [
+        { when: 'De día', t: 'Centro histórico', d: 'Calles empedradas, plazas y casas coloniales, con paradas para fotos.', img: 'assets/ve-paseo-calle.jpg', alt: 'El cochero conduce la Victoria por una calle del centro histórico', pos: '50% 40%', ic: 'M4 21V11l8-6 8 6v10M9 21v-5a3 3 0 0 1 6 0v5M2.5 21h19' },
+        { when: 'Tradición', t: 'Iglesias y capillas', d: 'Pasamos por los templos del pueblo y te contamos su historia.', img: 'assets/ve-cochero-iglesia.jpg', alt: 'El cochero en la Victoria frente a la iglesia', pos: '50% 30%', ic: 'M12 2v4M10 4h4M6 21V11l6-5 6 5v10M10 21v-4a2 2 0 0 1 4 0v4M3 21h18' },
+        { when: 'De noche', t: 'Paseo nocturno', d: 'Faroles encendidos y el pueblo iluminado de fondo.', img: 'assets/noche-novia.jpg', alt: 'La Victoria de noche en el pueblo iluminado', pos: '50% 40%', ic: 'M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z' }
+      ],
+      tourSteps: [
+        { t: 'Reservas por WhatsApp', d: 'Eliges el recorrido, el día y la hora.', ic: 'M21 12a8 8 0 0 1-11.8 7L4 20l1.2-4.6A8 8 0 1 1 21 12z' },
+        { t: 'Te esperamos en el punto de salida', d: 'La Victoria lista y el cochero a bordo.', ic: 'M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21zM12 12a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z' },
+        { t: 'Recorremos el pueblo', d: 'A un ritmo tranquilo, sin ruido y sin caballos.', ic: 'M6.5 20a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM17.5 20a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6.5 14l2-7h7l2.5 7M9 7V4h4' },
+        { t: 'Historias en el camino', d: 'El cochero te cuenta lo que no sale en los libros.', ic: 'M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM4 21V5M8 7h7' },
+        { t: 'Paradas para fotos', d: 'En los lugares más bonitos del recorrido.', ic: 'M4 8h3l2-3h6l2 3h3v11H4zM12 17a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z' }
+      ],
+      tourInfo: [
+        { t: 'Hasta 4 pasajeros', bg: '#F6E3D8', ic: 'M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20a6 6 0 0 1 12 0M16 11a2.5 2.5 0 1 0 0-5M17.5 14.5A5 5 0 0 1 21 20' },
+        { t: '100% eléctrica', bg: '#E3E8D8', ic: 'M13 2 4 14h7l-1 8 9-12h-7z' },
+        { t: 'De día o de noche', bg: '#F5EBD3', ic: 'M12 3v2M12 19v2M5 12H3M21 12h-2M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z' },
+        { t: 'Para toda la familia', bg: '#EDE4D7', ic: 'M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z' }
+      ],
+      toComprar: goSub('comprar'),
+      uses: [
+        { i: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15.5 8.5l-2 5-5 2 2-5z', t: 'Recorridos turísticos', d: 'Tu servicio principal.', bg: '#E3E8D8' },
+        { i: 'M12 21a6 6 0 1 0 0-12 6 6 0 0 0 0 12zM9 4h6l-1.5 3h-3z', t: 'Eventos', d: 'Bodas y celebraciones.', bg: '#F6E3D8' },
+        { i: 'M4 8h3l2-3h6l2 3h3v11H4zM12 17a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z', t: 'Sesiones de fotos', d: 'La carroza como escenario.', bg: '#F5EBD3' },
+        { i: 'M3 10v4h4l8 5V5l-8 5zM18 9a4 4 0 0 1 0 6', t: 'Activaciones de marca', d: 'Para empresas.', bg: '#EDE4D7' }
+      ],
+      impl: [
+        { n: 'I', t: 'Trazamos la ruta', ic: 'M6 21a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM18 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM8 19h7.5a3.5 3.5 0 0 0 0-7h-7a3.5 3.5 0 0 1 0-7H16', d: 'Con tiempos y distancias medidos.' },
+        { n: 'II', t: 'Diseñamos el producto turístico', ic: 'M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14', d: 'Según los atractivos del destino.' },
+        { n: 'III', t: 'Definimos el guion turístico', ic: 'M7 3h8l4 4v14H7zM15 3v4h4M10 12h6M10 16h6', d: 'Historias y paradas de cada recorrido.' },
+        { n: 'IV', t: 'Capacitamos en la operación', ic: 'M2 9l10-5 10 5-10 5zM6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5', d: 'Manejo, carga y cuidados.' },
+        { n: 'V', t: 'Acompañamos la puesta en marcha', ic: 'M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20a6 6 0 0 1 12 0M16 11a2.5 2.5 0 1 0 0-5M17.5 14.5A5 5 0 0 1 21 20', d: 'Contigo en los primeros recorridos.' }
+      ],
+      includes: [{ t: 'La carroza configurada para tu terreno', ic: 'M6.5 20a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM17.5 20a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6.5 14l2-7h7l2.5 7M9 7V4h4' }, { t: 'Cargador y batería', ic: 'M3 8h15v8H3zM21 11v2M7 11v2M11 11v2' }, { t: 'Faroles y cojinería en tus colores', ic: 'M9 3h6M8 6h8l-1 9H9zM12 15v6M9 21h6' }, { t: 'Capacitación para el conductor', ic: 'M2 9l10-5 10 5-10 5zM6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5' }, { t: 'Manual de operación y mantenimiento', ic: 'M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM4 21V5M8 7h7' }, { t: 'Garantía y soporte técnico', ic: 'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6zM9 12l2 2 4-4' }],
+      buySteps: [
+        { n: '1', t: 'Conversemos', ic: 'M21 12a8 8 0 0 1-11.8 7L4 20l1.2-4.6A8 8 0 1 1 21 12zM8.5 12h.01M12 12h.01M15.5 12h.01', d: 'Tu pueblo, tu negocio y cómo imaginas usarla.' },
+        { n: '2', t: 'Estudio del terreno', ic: 'M3 19l6-10 4 6 2-3 6 7z', d: 'Calles, pendientes, piso y clima.' },
+        { n: '3', t: 'Configuración y propuesta', ic: 'M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1M15 4v4M9 10v4M17 16v4', d: 'Mecánica, colores y tiempos de entrega.' },
+        { n: '4', t: 'Fabricación a mano', ic: 'M15 4a5 5 0 0 0-4.6 6.9L4 17.3V20h2.7l6.4-6.4A5 5 0 0 0 20 9l-3 1-2-2 1-3z', d: 'Chasis, carrocería, cojinería y pruebas.' },
+        { n: '5', t: 'Entrega y primer paseo', ic: 'M8 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM12 11h9M18 11v3M15 11v2', d: 'Capacitamos al conductor y salimos juntos.' }
+      ],
+      changes: ['Motor eléctrico en vez de caballo', 'Calles limpias', 'De día y de noche', 'Paseo silencioso'],
+      stays: ['La silueta del coche', 'El cochero y su oficio', 'El recorrido de siempre', 'La tradición del pueblo'],
+      convSteps: [
+        { n: '1', t: 'Recibimos tu coche', ic: 'M6.5 20a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM17.5 20a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6.5 14l2-7h7l2.5 7M9 7V4h4', d: 'Revisamos carrocería, ruedas y estructura.' },
+        { n: '2', t: 'Retiramos vara y arneses', ic: 'M7 4v8a5 5 0 0 0 10 0V4M5 4h4M15 4h4', d: 'Quitamos las piezas que usaba el caballo.' },
+        { n: '3', t: 'Chasis y dirección', ic: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM3.5 10.5 10 12M14 12l6.5-1.5M12 14v7', d: 'Reforzamos la estructura, dirección y frenos.' },
+        { n: '4', t: 'Motor y batería', ic: 'M13 2 4 14h7l-1 8 9-12h-7z', d: 'Instalamos el sistema eléctrico y los faroles.' },
+        { n: '5', t: 'Restauración', ic: 'M18 3l3 3-9 9-3-3zM9 12c-3 0-4 2-4 4 0 1.5-1 2.5-2 3 3 1 7 0 7-4', d: 'Pintura, cojinería y detalles.' },
+        { n: '6', t: 'De vuelta a la calle', ic: 'M5 21V4M5 4h12l-2 4 2 4H5', d: 'Capacitamos al cochero y salimos juntos.' }
+      ],
+      terrains: [
+        { t: 'Empedrado colonial', d: 'Suspensión para piedra', img: 'assets/terreno-empedrado.jpg' },
+        { t: 'Pendientes de montaña', d: 'Frenos y motor para la cuesta', img: 'assets/terreno-montana.jpg' },
+        { t: 'Calor y costa', d: 'Batería protegida del calor', img: 'assets/terreno-costa.jpg' },
+        { t: 'Haciendas y fincas', d: 'Llantas para tierra', img: 'assets/terreno-finca.jpg' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
